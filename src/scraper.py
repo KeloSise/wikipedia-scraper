@@ -1,5 +1,3 @@
-# scraper.py
-
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -30,14 +28,18 @@ class WikipediaScraper:
         if not country_list:
             print("No countries found. Exiting.")
             return leader_details
+
         for country in country_list:
             params = {'country': country}
             leader_response = requests.get(f"{self.base_url}{self.leaders_endpoint}", cookies=self.cookie, params=params)
+
             if leader_response.status_code == 200:
                 leader_details.append(leader_response.text)
             else:
                 print(f"Failed to fetch leaders for {country}. Status code: {leader_response.status_code}")
+
         return leader_details
+       
 
     def get_first_paragraph(self, wikipedia_url):        
         wikipedia_response = requests.get(wikipedia_url)
@@ -54,3 +56,11 @@ class WikipediaScraper:
             pass
 
   
+# For testing
+if __name__ == "__main__":
+    scraper = WikipediaScraper()
+    countries = scraper.get_countries()
+    print(countries)
+
+    leader_data = scraper.get_leaders(countries)
+    print(leader_data)
