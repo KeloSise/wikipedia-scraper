@@ -1,5 +1,3 @@
-# main.py
-
 from src.scraper import WikipediaScraper
 
 def main():
