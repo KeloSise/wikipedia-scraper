@@ -34,7 +34,7 @@ class WikipediaScraper:
             params = {'country': country}
             leader_response = requests.get(f"{self.base_url}{self.leaders_endpoint}", cookies=self.cookie, params=params)
 
-            print(f"The request for {country}: gave HTTP response {leader_response.status_code}")
+            print(f"The request for {country} gave HTTP response {leader_response.status_code}")
 
             if leader_response.status_code == 200:
                 leaders_data[country] = leader_response.json()
@@ -67,7 +67,6 @@ class WikipediaScraper:
         # Fetches the first paragraph from Wikipedia
         try:
             response = requests.get(wikipedia_url)
-            response.raise_for_status()  
             soup = BeautifulSoup(response.text, 'html.parser')
             paragraphs = soup.find_all('p')
 
@@ -79,10 +78,9 @@ class WikipediaScraper:
         except requests.exceptions.RequestException as e:
             print(f"Error fetching data from {wikipedia_url}: {e}")
             return None
-        
 
     def to_json_file(self, filepath):
-        # Saves data structure into a JSON file
+        # Saves instance variable (self.leaders_data) into a JSON file
         with open(filepath, 'w') as json_file:
             json.dump(self.leaders_data, json_file)
             
